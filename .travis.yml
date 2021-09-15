@@ -1,0 +1,13 @@
+language: csharp
+solution: HotelBooking.sln
+mono: none
+dotnet: 5.0.100
+script:
+ - cd HotelBooking.UnitTests
+ - dotnet restore
+ - dotnet build
+ - dotnet test
+ - cd ../HotelBooking.IntegrationTests
+ - dotnet restore
+ - dotnet build
+ - dotnet test
