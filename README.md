@@ -1,4 +1,4 @@
 # HotelBooking_Clean
-[![Build Status](https://travis-ci.org/Skelly-Co/RUST-Web-Application.svg?branch=master)](https://travis-ci.org/Skelly-Co/RUST-Web-Application)
+[![Build Status](https://app.travis-ci.com/Skelly-Co/Hotel-Booking.svg?token=ruZhdsEeVdFFauFkPzSW&branch=master)](https://app.travis-ci.com/Skelly-Co/Hotel-Booking)
 
 Azure Boards GitHub integratin has been set up.
