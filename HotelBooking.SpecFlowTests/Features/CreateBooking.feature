@@ -4,7 +4,7 @@
 
 @mytag
 Scenario: Start date and end date before occupied range
-	Given the start date is 2021-11-09
-	And the end date is 2021-11-10
+	Given the start date is 2021-11-04
+	And the end date is 2021-11-05
 	When the method 'CreateBooking' is called
 	Then the result should return true
