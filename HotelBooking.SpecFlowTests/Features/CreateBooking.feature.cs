@@ -82,16 +82,16 @@ namespace HotelBooking.SpecFlowTests.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Start date and end date before occupied range")]
+        [Xunit.SkippableFactAttribute(DisplayName="The Start date and the End date are before the occupied range")]
         [Xunit.TraitAttribute("FeatureTitle", "CreateBooking")]
-        [Xunit.TraitAttribute("Description", "Start date and end date before occupied range")]
+        [Xunit.TraitAttribute("Description", "The Start date and the End date are before the occupied range")]
         [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void StartDateAndEndDateBeforeOccupiedRange()
+        public virtual void TheStartDateAndTheEndDateAreBeforeTheOccupiedRange()
         {
             string[] tagsOfScenario = new string[] {
                     "mytag"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Start date and end date before occupied range", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The Start date and the End date are before the occupied range", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -113,10 +113,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 7
- testRunner.Given("the start date is 2021-11-11", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("the start date is 2021-11-04", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.And("the end date is 2021-11-10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the end date is 2021-11-05", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 9
  testRunner.When("the method \'CreateBooking\' is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

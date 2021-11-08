@@ -39,18 +39,18 @@ namespace HotelBooking.SpecFlowTests.Steps
             bookingManager = new BookingManager(bookingRepo.Object, roomRepo.Object);
         }
 
-        [When("the method 'CreateBooking' is called")]
-        public void WhenTheMethodIsCalled()
+        [Given("the start date is (.*)")]
+        public void GivenTheFirstDateIs(string date)
         {
-            var _startDate = _scenarioContext.Get<DateTime>("startDate");
-            var _endDate = _scenarioContext.Get<DateTime>("endDate");
-            var booking = new Booking
-            {
-                StartDate = _startDate,
-                EndDate = _endDate
-            };
-            var result = bookingManager.CreateBooking(booking);
-            _scenarioContext.Add("result", result);
+            DateTime startDate = DateTime.Parse(date);
+            _scenarioContext.Add("startDate", startDate);
+        }
+
+        [Given("the end date is (.*)")]
+        public void GivenTheSecondDateIs(string date)
+        {
+            DateTime endDate = DateTime.Parse(date);
+            _scenarioContext.Add("endDate", endDate);
         }
 
         [Then("the result should return (.*)")]
@@ -60,39 +60,18 @@ namespace HotelBooking.SpecFlowTests.Steps
             res.Should().Be(result);
         }
 
-        [Given("the start date is (.*)")]
-        public void GivenTheFirstDateIs(string date)
+        [When("the method 'CreateBooking' is called")]
+        public void CreateBookingCalled()
         {
-            var _startDate = DateTime.Parse(date);
-            _scenarioContext.Add("startDate", _startDate);
-        }
-
-        [Given("the end date is (.*)")]
-        public void GivenTheSecondDateIs(string date)
-        {
-            var _endDate = DateTime.Parse(date);
-            _scenarioContext.Add("endDate", _endDate);
-        }
-
-        [When("the method 'GetFullyOccupiedDate' is called error thrown")]
-        public void WhenMethodCalledErrorThrown()
-        {
-            try
-            {
-                var _startDate = _scenarioContext.Get<DateTime>("startDate");
-                var _endDate = _scenarioContext.Get<DateTime>("endDate");
-                bookingManager.GetFullyOccupiedDates(_startDate, _endDate);
-            }
-            catch (ArgumentException ex)
-            {
-                _result = ex.Message;
-            }
-        }
-
-        [Then("the result should be (.*)")]
-        public void ThenTheResultShouldBe(string result)
-        {
-            _result.Should().Be(result);
+            DateTime startDate = _scenarioContext.Get<DateTime>("startDate");
+            DateTime endDate = _scenarioContext.Get<DateTime>("endDate");
+            Booking booking = new()
+			{
+                StartDate = startDate,
+                EndDate = endDate
+            };
+            bool result = bookingManager.CreateBooking(booking);
+            _scenarioContext.Add("result", result);
         }
     }
 }
