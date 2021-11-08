@@ -10,14 +10,9 @@
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.5" />
 
     
-
+    <PackageReference Include="SpecRun.SpecFlow" Version="3.9.7" />
     
-    <PackageReference Include="SpecFlow.xUnit" Version="3.9.8" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+
     
 
     
@@ -30,8 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Drivers\" />
+    <Folder Include="Hooks\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\HotelBooking.Core\HotelBooking.Core.csproj" />
-    <ProjectReference Include="..\HotelBooking.WebApi\HotelBooking.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

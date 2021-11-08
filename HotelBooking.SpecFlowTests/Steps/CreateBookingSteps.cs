@@ -6,9 +6,9 @@ using TechTalk.SpecFlow;
 
 namespace HotelBooking.SpecFlowTests.Steps
 {
-	[Binding]
-	public sealed class CreateBookingSteps
-	{
+    [Binding]
+    public sealed class CreateBookingSteps
+    {
         private readonly ScenarioContext _scenarioContext;
         private readonly Mock<IRepository<Booking>> _bookingRepository = new();
         private readonly Mock<IRepository<Room>> _roomRepository = new();
@@ -20,7 +20,7 @@ namespace HotelBooking.SpecFlowTests.Steps
         {
             _scenarioContext = scenarioContext;
             DateTime startOccupiedDate = DateTime.Now.AddDays(_startOccupiedDay);
-            DateTime endOccupiedDate = DateTime.Now.AddDays(_endOccupiedDay);
+            DateTime endOccupiedDate = DateTime.Now.AddDays(_endOccupiedDay).AddHours(1);
 
             Booking[] activeBookings = new Booking[3]
             {

@@ -19,32 +19,27 @@ namespace HotelBooking.SpecFlowTests.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class CreateBookingFeature : object, Xunit.IClassFixture<CreateBookingFeature.FixtureData>, System.IDisposable
+    [TechTalk.SpecRun.FeatureAttribute("CreateBooking", SourceFile="Features\\CreateBooking.feature", SourceLine=0)]
+    public partial class CreateBookingFeature
     {
         
-        private static TechTalk.SpecFlow.ITestRunner testRunner;
+        private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = ((string[])(null));
-        
-        private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "CreateBooking.feature"
 #line hidden
         
-        public CreateBookingFeature(CreateBookingFeature.FixtureData fixtureData, HotelBooking_SpecFlowTests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
-        {
-            this._testOutputHelper = testOutputHelper;
-            this.TestInitialize();
-        }
-        
-        public static void FeatureSetup()
+        [TechTalk.SpecRun.FeatureInitialize()]
+        public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "CreateBooking", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
-        public static void FeatureTearDown()
+        [TechTalk.SpecRun.FeatureCleanup()]
+        public virtual void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
@@ -54,6 +49,7 @@ namespace HotelBooking.SpecFlowTests.Features
         {
         }
         
+        [TechTalk.SpecRun.ScenarioCleanup()]
         public virtual void TestTearDown()
         {
             testRunner.OnScenarioEnd();
@@ -62,7 +58,6 @@ namespace HotelBooking.SpecFlowTests.Features
         public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
-            testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
         public virtual void ScenarioStart()
@@ -75,15 +70,8 @@ namespace HotelBooking.SpecFlowTests.Features
             testRunner.CollectScenarioErrors();
         }
         
-        void System.IDisposable.Dispose()
-        {
-            this.TestTearDown();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="The start date and the end date are before the occupied range")]
-        [Xunit.TraitAttribute("FeatureTitle", "CreateBooking")]
-        [Xunit.TraitAttribute("Description", "The start date and the end date are before the occupied range")]
-        [Xunit.TraitAttribute("Category", "mytag")]
+        [TechTalk.SpecRun.ScenarioAttribute("The start date and the end date are before the occupied range", new string[] {
+                "mytag"}, SourceLine=4)]
         public virtual void TheStartDateAndTheEndDateAreBeforeTheOccupiedRange()
         {
             string[] tagsOfScenario = new string[] {
@@ -126,10 +114,8 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The start date and the end date are after the occupied range")]
-        [Xunit.TraitAttribute("FeatureTitle", "CreateBooking")]
-        [Xunit.TraitAttribute("Description", "The start date and the end date are after the occupied range")]
-        [Xunit.TraitAttribute("Category", "mytag")]
+        [TechTalk.SpecRun.ScenarioAttribute("The start date and the end date are after the occupied range", new string[] {
+                "mytag"}, SourceLine=11)]
         public virtual void TheStartDateAndTheEndDateAreAfterTheOccupiedRange()
         {
             string[] tagsOfScenario = new string[] {
@@ -172,10 +158,8 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="The start date is before and the end date is after the occupied range")]
-        [Xunit.TraitAttribute("FeatureTitle", "CreateBooking")]
-        [Xunit.TraitAttribute("Description", "The start date is before and the end date is after the occupied range")]
-        [Xunit.TraitAttribute("Category", "mytag")]
+        [TechTalk.SpecRun.ScenarioAttribute("The start date is before and the end date is after the occupied range", new string[] {
+                "mytag"}, SourceLine=18)]
         public virtual void TheStartDateIsBeforeAndTheEndDateIsAfterTheOccupiedRange()
         {
             string[] tagsOfScenario = new string[] {
@@ -218,20 +202,214 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
-        [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        public class FixtureData : System.IDisposable
+        public virtual void TheStartDateIsBeforeAndEndDateIsDuringTheOccupiedRange(string startDateDays, string endDateDays, string[] exampleTags)
         {
-            
-            public FixtureData()
+            string[] @__tags = new string[] {
+                    "mytag"};
+            if ((exampleTags != null))
             {
-                CreateBookingFeature.FeatureSetup();
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
-            
-            void System.IDisposable.Dispose()
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("StartDateDays", startDateDays);
+            argumentsOfScenario.Add("EndDateDays", endDateDays);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The start date is before and end date is during the occupied range", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 26
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
             {
-                CreateBookingFeature.FeatureTearDown();
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
             }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 27
+ testRunner.Given(string.Format("the start date is today + {0} days", startDateDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 28
+ testRunner.And(string.Format("the end date is today + {0} days", endDateDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 29
+ testRunner.When("the method \'CreateBooking\' is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.Then("the result should return false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date is before and end date is during the occupied range, Variant 0", new string[] {
+                "mytag"}, SourceLine=33)]
+        public virtual void TheStartDateIsBeforeAndEndDateIsDuringTheOccupiedRange_Variant0()
+        {
+#line 26
+this.TheStartDateIsBeforeAndEndDateIsDuringTheOccupiedRange("1", "5", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date is before and end date is during the occupied range, Variant 1", new string[] {
+                "mytag"}, SourceLine=33)]
+        public virtual void TheStartDateIsBeforeAndEndDateIsDuringTheOccupiedRange_Variant1()
+        {
+#line 26
+this.TheStartDateIsBeforeAndEndDateIsDuringTheOccupiedRange("1", "10", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void TheStartDateIsDuringAndEndDateIsAfterTheOccupiedRange(string startDateDays, string endDateDays, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "mytag"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("StartDateDays", startDateDays);
+            argumentsOfScenario.Add("EndDateDays", endDateDays);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The start date is during and end date is after the occupied range", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 38
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 39
+ testRunner.Given(string.Format("the start date is today + {0} days", startDateDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 40
+ testRunner.And(string.Format("the end date is today + {0} days", endDateDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 41
+ testRunner.When("the method \'CreateBooking\' is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 42
+ testRunner.Then("the result should return false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date is during and end date is after the occupied range, 5", new string[] {
+                "mytag"}, SourceLine=45)]
+        public virtual void TheStartDateIsDuringAndEndDateIsAfterTheOccupiedRange_5()
+        {
+#line 38
+this.TheStartDateIsDuringAndEndDateIsAfterTheOccupiedRange("5", "12", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date is during and end date is after the occupied range, 10", new string[] {
+                "mytag"}, SourceLine=45)]
+        public virtual void TheStartDateIsDuringAndEndDateIsAfterTheOccupiedRange_10()
+        {
+#line 38
+this.TheStartDateIsDuringAndEndDateIsAfterTheOccupiedRange("10", "12", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void TheStartDateAndTheEndDateAreDuringTheOccupiedRange(string startDateDays, string endDateDays, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "mytag"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("StartDateDays", startDateDays);
+            argumentsOfScenario.Add("EndDateDays", endDateDays);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("The start date and the end date are during the occupied range", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 50
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 51
+ testRunner.Given(string.Format("the start date is today + {0} days", startDateDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 52
+ testRunner.And(string.Format("the end date is today + {0} days", endDateDays), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 53
+ testRunner.When("the method \'CreateBooking\' is called", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 54
+ testRunner.Then("the result should return false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date and the end date are during the occupied range, Variant 0", new string[] {
+                "mytag"}, SourceLine=57)]
+        public virtual void TheStartDateAndTheEndDateAreDuringTheOccupiedRange_Variant0()
+        {
+#line 50
+this.TheStartDateAndTheEndDateAreDuringTheOccupiedRange("5", "6", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date and the end date are during the occupied range, Variant 1", new string[] {
+                "mytag"}, SourceLine=57)]
+        public virtual void TheStartDateAndTheEndDateAreDuringTheOccupiedRange_Variant1()
+        {
+#line 50
+this.TheStartDateAndTheEndDateAreDuringTheOccupiedRange("9", "10", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("The start date and the end date are during the occupied range, Variant 2", new string[] {
+                "mytag"}, SourceLine=57)]
+        public virtual void TheStartDateAndTheEndDateAreDuringTheOccupiedRange_Variant2()
+        {
+#line 50
+this.TheStartDateAndTheEndDateAreDuringTheOccupiedRange("5", "10", ((string[])(null)));
+#line hidden
         }
     }
 }
