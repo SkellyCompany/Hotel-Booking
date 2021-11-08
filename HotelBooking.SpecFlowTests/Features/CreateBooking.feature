@@ -1,18 +1,29 @@
 ﻿Feature: CreateBooking
-	A hotel room can be booked for a period (start date – end date) in the future
-	provided that it is not already booked for one or more days during the desired period
 
 @mytag
-Scenario: The Start date and the End date are before the occupied range
-	Given the start date is 2021-11-04
-	And the end date is 2021-11-05
+Scenario: the start date and the end date are before the 
+	Given the start date is today + 1 days
+	And the end date is today + 2 days
 	When the method 'CreateBooking' is called
 	Then the result should return true
 
+#
+#Scenario: The start date and the end date are before the occupied range
+#	Given the start date is today + 1 days
+#	And the end date is today + 2 days
+#	When the method 'CreateBooking' is called
+#	Then the result should return true
+#
+#	Scenario: The start date and the end date are before the occupied rangezzz
+#	Given the start date is today + 1 days
+#	And the end date is today + 2 days
+#	When the method 'CreateBooking' is called
+#	Then the result should return true
+
 #@mytag
-#Scenario: The Start date and the End date are after the occupied range
-#	Given the start date is 2022-01-22
-#	And the end date is 2022-01-24
+#Scenario: The start date and the end date are after the occupied range
+#	Given the start date is today + 1 days
+#	And the end date is today + 2 days
 #	When the method 'CreateBooking' is called
 #	Then the result should return true
 

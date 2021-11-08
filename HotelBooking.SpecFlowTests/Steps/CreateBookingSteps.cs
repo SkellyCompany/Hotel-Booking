@@ -9,55 +9,36 @@ namespace HotelBooking.SpecFlowTests.Steps
 	[Binding]
 	public sealed class CreateBookingSteps
 	{
-        // For additional details on SpecFlow step definitions see https://go.specflow.org/doc-stepdef
-
         private readonly ScenarioContext _scenarioContext;
-        private readonly Mock<IRepository<Booking>> bookingRepo = new();
-        private readonly Mock<IRepository<Room>> roomRepo = new();
-        private readonly IBookingManager bookingManager;
-        private string _result;
+        private readonly Mock<IRepository<Booking>> _bookingRepository = new();
+        private readonly Mock<IRepository<Room>> _roomRepository = new();
+        private readonly IBookingManager _bookingManager;
+        public static int _startOccupiedDay = 5;
+        public static int _endOccupiedDay = 10;
 
         public CreateBookingSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            var date = DateTime.Now.AddDays(4);
-            var activeBookings = new Booking[3]
+            DateTime startOccupiedDate = DateTime.Now.AddDays(_startOccupiedDay);
+            DateTime endOccupiedDate = DateTime.Now.AddDays(_endOccupiedDay);
+
+            Booking[] activeBookings = new Booking[3]
             {
-                new Booking { StartDate=date, EndDate=date.AddDays(14), IsActive=true, RoomId=1 },
-                new Booking { StartDate=date, EndDate=date.AddDays(14), IsActive=true, RoomId=2 },
-                new Booking { StartDate=date, EndDate=date.AddDays(14), IsActive=true, RoomId=3 }
+                new Booking { StartDate = startOccupiedDate, EndDate = endOccupiedDate, IsActive = true, RoomId = 1 },
+                new Booking { StartDate = startOccupiedDate, EndDate = endOccupiedDate, IsActive = true, RoomId = 2 },
+                new Booking { StartDate = startOccupiedDate, EndDate = endOccupiedDate, IsActive = true, RoomId = 3 }
             };
-            bookingRepo.Setup(x => x.Add(It.IsAny<Booking>()));
-            bookingRepo.Setup(x => x.GetAll()).Returns(activeBookings);
-            var rooms = new Room[3]
+            Room[] rooms = new Room[3]
             {
-                new Room { Id=1, Description="A" },
-                new Room { Id=2, Description="B" },
-                new Room { Id = 3, Description = "C" }
+                new Room { Id = 1, Description = "Room A" },
+                new Room { Id = 2, Description = "Room B" },
+                new Room { Id = 3, Description = "Room C" }
             };
-            roomRepo.Setup(x => x.GetAll()).Returns(rooms);
-            bookingManager = new BookingManager(bookingRepo.Object, roomRepo.Object);
-        }
 
-        [Given("the start date is (.*)")]
-        public void GivenTheFirstDateIs(string date)
-        {
-            DateTime startDate = DateTime.Parse(date);
-            _scenarioContext.Add("startDate", startDate);
-        }
-
-        [Given("the end date is (.*)")]
-        public void GivenTheSecondDateIs(string date)
-        {
-            DateTime endDate = DateTime.Parse(date);
-            _scenarioContext.Add("endDate", endDate);
-        }
-
-        [Then("the result should return (.*)")]
-        public void ThenTheResultShouldBeTrue(bool result)
-        {
-            bool res = _scenarioContext.Get<bool>("result");
-            res.Should().Be(result);
+            _bookingRepository.Setup(x => x.Add(It.IsAny<Booking>()));
+            _bookingRepository.Setup(x => x.GetAll()).Returns(activeBookings);
+            _roomRepository.Setup(x => x.GetAll()).Returns(rooms);
+            _bookingManager = new BookingManager(_bookingRepository.Object, _roomRepository.Object);
         }
 
         [When("the method 'CreateBooking' is called")]
@@ -66,12 +47,33 @@ namespace HotelBooking.SpecFlowTests.Steps
             DateTime startDate = _scenarioContext.Get<DateTime>("startDate");
             DateTime endDate = _scenarioContext.Get<DateTime>("endDate");
             Booking booking = new()
-			{
+            {
                 StartDate = startDate,
                 EndDate = endDate
             };
-            bool result = bookingManager.CreateBooking(booking);
+            bool result = _bookingManager.CreateBooking(booking);
             _scenarioContext.Add("result", result);
+        }
+
+        [Given(@"the start date is today \+ (.*) days")]
+        public void GivenTheFirstDateTodayPlusDays(int days)
+        {
+            DateTime startDate = DateTime.Now.AddDays(days);
+            _scenarioContext.Add("startDate", startDate);
+        }
+
+        [Given(@"the end date is today \+ (.*) days")]
+        public void GivenTheEndDateTodayPlusDays(int days)
+        {
+            DateTime endDate = DateTime.Now.AddDays(days);
+            _scenarioContext.Add("endDate", endDate);
+        }
+
+        [Then("the result should return (.*)")]
+        public void ThenTheResultShouldBe(bool expected)
+        {
+            bool result = _scenarioContext.Get<bool>("result");
+            result.Should().Be(expected);
         }
     }
 }
