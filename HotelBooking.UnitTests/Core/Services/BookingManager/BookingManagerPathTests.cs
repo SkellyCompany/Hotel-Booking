@@ -104,6 +104,25 @@ namespace HotelBooking.UnitTests {
 			Assert.Equal(-1, roomId);
 		}
 
+		// MARK: Multiple condition coverage | 1 - 2 - 13
+		[Fact]
+		public void FindAvailableRoom_StartDateLaterThanEndDate_ThrowsArgumentException()
+		{
+			// Arrange
+			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
+			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
+
+			int endDateDaysFromToday = -1;
+			DateTime startDate = DateTime.Today.AddDays(1);
+			DateTime endDate = startDate.AddDays(endDateDaysFromToday);
+
+			// Act
+			Action act = () => bookingManager.FindAvailableRoom(startDate, endDate);
+
+			// Assert
+			Assert.Throws<ArgumentException>(act);
+		}
+
 		// GetFullyOccupiedDates
 
 		// MARK: Node coverage | 1 - 2 - 18
