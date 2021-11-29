@@ -32,6 +32,7 @@ namespace HotelBooking.Core {
 
 			var activeBookings = bookingRepository.GetAll().Where(b => b.IsActive);
 			foreach (var room in roomRepository.GetAll()) {
+				Console.WriteLine("22");
 				var activeBookingsForCurrentRoom = activeBookings.Where(b => b.RoomId == room.Id);
 				if (activeBookingsForCurrentRoom.All(b => startDate < b.StartDate &&
 					endDate < b.StartDate || startDate > b.EndDate && endDate > b.EndDate)) {
