@@ -7,76 +7,161 @@ using System.Linq;
 
 namespace HotelBooking.UnitTests {
 	public class BookingManagerTests {
-		private IBookingManager bookingManager;
-		private Mock<IRepository<Booking>> bookingRepository;
-		private List<Booking> emptyBookings;
-		private Mock<IRepository<Room>> roomRepository;
-		private List<Room> twoRooms;
+		private IBookingManager _bookingManager;
+		private Mock<IRepository<Booking>> _bookingRepository;
+		private List<Booking> _emptyBookings;
+		private Mock<IRepository<Room>> _roomRepository;
+		private List<Room> _twoRooms;
+		private List<Room> _emptyRooms;
 
 		public BookingManagerTests() {
 			// Booking Repository
-			bookingRepository = new Mock<IRepository<Booking>>();
-			emptyBookings = new List<Booking> { };
+			_bookingRepository = new Mock<IRepository<Booking>>();
+			_emptyBookings = new List<Booking> { };
 
 			// Room Repository
-			roomRepository = new Mock<IRepository<Room>>();
-			twoRooms = new List<Room>
+			_roomRepository = new Mock<IRepository<Room>>();
+			_twoRooms = new List<Room>
 			{
 				new Room { Id=1, Description="A" },
 				new Room { Id=2, Description="B" },
 			};
+			_emptyRooms = new List<Room>
+			{
+
+			};
 
 			// Booking Manager
-			bookingManager = new BookingManager(bookingRepository.Object, roomRepository.Object);
+			_bookingManager = new BookingManager(_bookingRepository.Object, _roomRepository.Object);
 		}
 
-		[Theory]
-		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_RoomAvailable.json")]
-		public void FindAvailableRoom_ValidDates_ExistingRoomId(int startDateDaysFromToday, int endDateDaysFromToday) {
-			// Arrange
-			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
-
-			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
-			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
-
-			// Act
-			int roomId = bookingManager.FindAvailableRoom(startDate, endDate);
-
-			// Assert
-			Assert.Contains(roomId, twoRooms.Select(x => x.Id).ToArray());
-		}
+		//FindAvailableRooms
 
 		[Theory]
-		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_StartDateNotInTheFuture.json")]
-		public void FindAvailableRoom_StartDateNotInTheFuture_ThrowsArgumentException(int startDateDaysFromToday) {
+		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_StartDateInThePast.json")]
+		public void FindAvailableRoom_StartDateInThePast_ThrowsArgumentException(int startDateDaysFromToday) {
 			// Arrange
-			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
 
 			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
 			DateTime endDate = startDate.AddDays(1);
 
 			// Act
-			Action act = () => bookingManager.FindAvailableRoom(startDate, endDate);
+			Action act = () => _bookingManager.FindAvailableRoom(startDate, endDate);
 
 			// Assert
 			Assert.Throws<ArgumentException>(act);
 		}
 
 		[Theory]
-		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_EndDateNotInTheFuture.json")]
-		public void FindAvailableRoom_EndDateNotInTheFuture_ThrowsArgumentException(int endDateDaysFromToday) {
+		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_StartDateAfterEndDate.json")]
+		public void FindAvailableRoom_StartDateLaterThanEndDate_ThrowsArgumentException(int days)
+		{
 			// Arrange
-			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
+
+			DateTime startDate = DateTime.Today.AddDays(days + 1);
+			DateTime endDate = DateTime.Today.AddDays(days);
+
+			// Act
+			Action act = () => _bookingManager.FindAvailableRoom(startDate, endDate);
+
+			// Assert
+			Assert.Throws<ArgumentException>(act);
+		}
+
+		[Theory]
+		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_EndDateInThePast.json")]
+		public void FindAvailableRoom_EndDateNotInTheFuture_ThrowsArgumentException(int endDateDaysFromToday)
+		{
+			// Arrange
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
 
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
 			DateTime startDate = endDate.AddDays(-1);
 
 
 			// Act
-			Action act = () => bookingManager.FindAvailableRoom(startDate, endDate);
+			Action act = () => _bookingManager.FindAvailableRoom(startDate, endDate);
+
+			// Assert
+			Assert.Throws<ArgumentException>(act);
+		}
+
+		[Theory]
+		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_NoRooms.json")]
+		public void FindAvailableRoo_NoRooms_ReturnsMinusOne(int startDateDaysFromToday, int endDateDaysFromToday)
+		{
+			// Arrange
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_emptyRooms);
+
+			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
+			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
+
+			// Act
+			int roomId = _bookingManager.FindAvailableRoom(startDate, endDate);
+
+			// Assert
+			Assert.Equal(roomId, -1);
+		}
+
+		[Theory]
+		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_RoomUnavailable.json")]
+		public void FindAvailableRoo_UnavailableRoom_ReturnsMinusOne(int startDateDaysFromToday, int endDateDaysFromToday)
+		{
+			// Arrange
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_emptyRooms);
+
+			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
+			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
+
+			// Act
+			int roomId = _bookingManager.FindAvailableRoom(startDate, endDate);
+
+			// Assert
+			Assert.Equal(roomId, -1);
+		}
+
+		[Theory]
+		[JsonData("Core/Services/BookingManager/TestData/FindAvailableRoom_RoomAvailable.json")]
+		public void FindAvailableRoom_ValidDates_ExistingRoomId(int startDateDaysFromToday, int endDateDaysFromToday)
+		{
+			// Arrange
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
+
+			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
+			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
+
+			// Act
+			int roomId = _bookingManager.FindAvailableRoom(startDate, endDate);
+
+			// Assert
+			Assert.Contains(roomId, _twoRooms.Select(x => x.Id).ToArray());
+		}
+
+		//GetFullyOccupiedDates
+
+
+		[Theory]
+		[JsonData("Core/Services/BookingManager/TestData/GetFullyOccupiedDates_StartDateBiggerThanEndDate.json")]
+		public void GetFullyOccupiedDates_StartDateBiggerThanEndDate_ThrowsArgumentException(int startDateDaysFromToday, int endDateDaysFromToday)
+		{
+			// Arrange
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
+
+			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
+			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
+
+
+			// Act
+			Action act = () => _bookingManager.GetFullyOccupiedDates(startDate, endDate);
 
 			// Assert
 			Assert.Throws<ArgumentException>(act);
@@ -86,18 +171,37 @@ namespace HotelBooking.UnitTests {
 		[JsonData("Core/Services/BookingManager/TestData/GetFullyOccupiedDates_ValidDates.json")]
 		public void GetFullyOccupiedDates_ValidDates_EmptyArray(int startDateDaysFromToday, int endDateDaysFromToday) {
 			// Arrange
-			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
 
 			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
 
 			// Act
-			List<DateTime> occupiedDates = bookingManager.GetFullyOccupiedDates(startDate, endDate);
+			List<DateTime> occupiedDates = _bookingManager.GetFullyOccupiedDates(startDate, endDate);
 
 			// Assert
 			Assert.Empty(occupiedDates);
 		}
+
+		[Theory]
+		[JsonData("Core/Services/BookingManager/TestData/GetFullyOccupiedDates_ValidDates.json")]
+		public void GetFullyOccupiedDates_BookingsLessThanRooms_EmptyArray(int startDateDaysFromToday, int endDateDaysFromToday)
+		{
+			// Arrange
+			_bookingRepository.Setup(x => x.GetAll()).Returns(_emptyBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
+
+			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
+			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
+
+			// Act
+			List<DateTime> occupiedDates = _bookingManager.GetFullyOccupiedDates(startDate, endDate);
+
+			// Assert
+			Assert.Empty(occupiedDates);
+		}
+
 
 		[Theory]
 		[JsonData("Core/Services/BookingManager/TestData/GetFullyOccupiedDates_ValidDates.json")]
@@ -107,7 +211,7 @@ namespace HotelBooking.UnitTests {
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
 
 			List<Booking> fullBookings = new List<Booking> { };
-			foreach (Room room in twoRooms) {
+			foreach (Room room in _twoRooms) {
 				fullBookings.Add(new Booking {
 					StartDate = startDate,
 					EndDate = endDate,
@@ -116,8 +220,8 @@ namespace HotelBooking.UnitTests {
 				});
 			}
 
-			bookingRepository.Setup(x => x.GetAll()).Returns(fullBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
+			_bookingRepository.Setup(x => x.GetAll()).Returns(fullBookings);
+			_roomRepository.Setup(x => x.GetAll()).Returns(_twoRooms);
 
 			List<DateTime> expected = new List<DateTime> { };
 			for (int i = startDateDaysFromToday; i <= endDateDaysFromToday; i++) {
@@ -125,28 +229,10 @@ namespace HotelBooking.UnitTests {
 			}
 
 			// Act
-			List<DateTime> occupiedDates = bookingManager.GetFullyOccupiedDates(startDate, endDate);
+			List<DateTime> occupiedDates = _bookingManager.GetFullyOccupiedDates(startDate, endDate);
 
 			// Assert
 			Assert.Equal(expected, occupiedDates);
-		}
-
-		[Theory]
-		[JsonData("Core/Services/BookingManager/TestData/GetFullyOccupiedDates_StartDateBiggerThanEndDate.json")]
-		public void GetFullyOccupiedDates_StartDateBiggerThanEndDate_ThrowsArgumentException(int startDateDaysFromToday, int endDateDaysFromToday) {
-			// Arrange
-			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
-
-			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
-			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
-
-
-			// Act
-			Action act = () => bookingManager.GetFullyOccupiedDates(startDate, endDate);
-
-			// Assert
-			Assert.Throws<ArgumentException>(act);
 		}
 	}
 }
