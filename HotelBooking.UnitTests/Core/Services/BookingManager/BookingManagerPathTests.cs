@@ -84,20 +84,15 @@ namespace HotelBooking.UnitTests {
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
 
 			List<Booking> fullBookings = new List<Booking> { };
-			fullBookings.Add(new Booking {
-				StartDate = startDate.AddDays(-10),
-				EndDate = endDate.AddDays(10),
-				Room = oneRoom[0],
-				IsActive = true
-			});
-			// foreach (Room room in oneRoom) {
-			// 	fullBookings.Add(new Booking {
-			// 		StartDate = startDate.AddDays(-1),
-			// 		EndDate = endDate.AddDays(1),
-			// 		Room = room,
-			// 		IsActive = true
-			// 	});
-			// }
+			foreach (Room room in oneRoom) {
+				fullBookings.Add(new Booking {
+					StartDate = startDate,
+					EndDate = endDate,
+					Room = room,
+					RoomId = room.Id,
+					IsActive = true
+				});
+			}
 
 			bookingRepository.Setup(x => x.GetAll()).Returns(fullBookings);
 			roomRepository.Setup(x => x.GetAll()).Returns(oneRoom);
@@ -113,8 +108,7 @@ namespace HotelBooking.UnitTests {
 
 		// MARK: Node coverage | 1 - 2 - 18
 		[Fact]
-		public void GetFullyOccupiedDates_StartDateBiggerThanEndDate_ThrowsArgumentException()
-		{
+		public void GetFullyOccupiedDates_StartDateBiggerThanEndDate_ThrowsArgumentException() {
 			// Arrange
 			int startDateDaysFromToday = 5;
 			int endDateDaysFromToday = 1;
@@ -134,22 +128,20 @@ namespace HotelBooking.UnitTests {
 
 		// MARK: Node coverage | 1 - 3/7 - 8 - 9 - 10/12 - 13 - 14 - 15	- 9 - 16 - 17 - 18
 		[Fact]
-		public void GetFullyOccupiedDates_ValidDates_ValidDates()
-		{
+		public void GetFullyOccupiedDates_ValidDates_ValidDates() {
 			// Arrange
 			int startDateDaysFromToday = 1;
-			int endDateDaysFromToday = 5;
+			int endDateDaysFromToday = 1;
 			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
 
 			List<Booking> fullBookings = new List<Booking> { };
-			foreach (Room room in twoRooms)
-			{
-				fullBookings.Add(new Booking
-				{
+			foreach (Room room in twoRooms) {
+				fullBookings.Add(new Booking {
 					StartDate = startDate,
 					EndDate = endDate,
 					Room = room,
+					RoomId = room.Id,
 					IsActive = true
 				});
 			}
@@ -158,8 +150,7 @@ namespace HotelBooking.UnitTests {
 			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
 
 			List<DateTime> expected = new List<DateTime> { };
-			for (int i = startDateDaysFromToday; i <= endDateDaysFromToday; i++)
-			{
+			for (int i = startDateDaysFromToday; i <= endDateDaysFromToday; i++) {
 				expected.Add(DateTime.Today.AddDays(i));
 			}
 
@@ -170,13 +161,12 @@ namespace HotelBooking.UnitTests {
 			Assert.Equal(expected, occupiedDates);
 		}
 
-		// MARK: Node coverage | 1 - 3/7 - 8 - 9 - 16 - 17 - 18
+		// MARK: Edge coverage | 1 - 3/7 - 8 - 16 - 17 - 18
 		[Fact]
-		public void GetFullyOccupiedDates_ValidDates_EmptyArray()
-		{
+		public void GetFullyOccupiedDates_ValidDates_EmptyArray() {
 			// Arrange
 			int startDateDaysFromToday = 1;
-			int endDateDaysFromToday = 5;
+			int endDateDaysFromToday = 1;
 			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
 			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
 
@@ -190,18 +180,26 @@ namespace HotelBooking.UnitTests {
 			Assert.Empty(occupiedDates);
 		}
 
-		// MARK: Node coverage | 1 - 3/7 - 8 - 9 - 10/12 - 13 - 15 - 9 - 16 - 17 - 18
+		// MARK: Edge coverage | 1 - 3/7 - 8 - 9 - 10/12 - 13 - 15 - 9 - 16 - 17 - 18
 		[Fact]
-		public void GetFullyOccupiedDates_ValidDates_NumberBookingsLessThanNumberRooms()
-		{
+		public void GetFullyOccupiedDates_ValidDates_NumberBookingsLessThanNumberRooms() {
 			// Arrange
 			int startDateDaysFromToday = 1;
-			int endDateDaysFromToday = 5;
-			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
-			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
-
+			int endDateDaysFromToday = 1;
 			DateTime startDate = DateTime.Today.AddDays(startDateDaysFromToday);
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
+
+			List<Booking> bookings = new List<Booking> { };
+			bookings.Add(new Booking {
+				StartDate = startDate,
+				EndDate = endDate,
+				Room = twoRooms[0],
+				RoomId = twoRooms[0].Id,
+				IsActive = true
+			});
+
+			bookingRepository.Setup(x => x.GetAll()).Returns(bookings);
+			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
 
 			// Act
 			List<DateTime> occupiedDates = bookingManager.GetFullyOccupiedDates(startDate, endDate);
