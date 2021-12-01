@@ -40,6 +40,8 @@ namespace HotelBooking.UnitTests {
 		// FindAvailableRoom
 
 		// MARK: Node coverage | 1 - 2 - 13
+		// Condition: T || *
+		// Loop iterations: 2
 		[Fact]
 		public void FindAvailableRoom_StartDateInThePast_ThrowsArgumentException() {
 			// Arrange
@@ -58,9 +60,10 @@ namespace HotelBooking.UnitTests {
 		}
 
 		// MARK: Node coverage | 1 - 3/4 - 5 - 6 - 7 - 8/10 - 11 - 5 - 12 - 13
+		// Condition: F || F
+		// Loop iterations: 1
 		[Fact]
-		public void FindAvailableRoom_ValidDates_ExistingRoomId()
-		{
+		public void FindAvailableRoom_ValidDates_ExistingRoomId() {
 			// Arrange
 			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
 			roomRepository.Setup(x => x.GetAll()).Returns(oneRoom);
@@ -79,9 +82,10 @@ namespace HotelBooking.UnitTests {
 
 
 		// MARK: Edge coverage | 1 - 3/4 - 5 - 6 - 7 - 11 - 5 - 12 - 13
+		// Condition: F || F
+		// Loop iterations: 1
 		[Fact]
-		public void FindAvailableRoom_ValidDates_MinusOne()
-		{
+		public void FindAvailableRoom_ValidDates_MinusOne() {
 			// Arrange
 			int startDateDaysFromToday = 1;
 			int endDateDaysFromToday = 5;
@@ -89,10 +93,8 @@ namespace HotelBooking.UnitTests {
 			DateTime endDate = DateTime.Today.AddDays(endDateDaysFromToday);
 
 			List<Booking> fullBookings = new List<Booking> { };
-			foreach (Room room in oneRoom)
-			{
-				fullBookings.Add(new Booking
-				{
+			foreach (Room room in oneRoom) {
+				fullBookings.Add(new Booking {
 					StartDate = startDate,
 					EndDate = endDate,
 					Room = room,
@@ -113,9 +115,10 @@ namespace HotelBooking.UnitTests {
 
 
 		// MARK: Loop coverage  | 1 - 3/4 - 5 - 12 - 13
+		// COndition: F || F
+		// Loop Iterations: 0
 		[Fact]
-		public void FindAvailableRoom_NoRooms_MinusOne()
-		{
+		public void FindAvailableRoom_NoRooms_MinusOne() {
 			// Arrange
 			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
 			roomRepository.Setup(x => x.GetAll()).Returns(emptyRooms);
@@ -133,9 +136,10 @@ namespace HotelBooking.UnitTests {
 		}
 
 		// MARK: Multiple condition coverage | 1 - 2 - 13
+		// Condition: F || T
+		// Loop iterations: 2
 		[Fact]
-		public void FindAvailableRoom_StartDateLaterThanEndDate_ThrowsArgumentException()
-		{
+		public void FindAvailableRoom_StartDateLaterThanEndDate_ThrowsArgumentException() {
 			// Arrange
 			bookingRepository.Setup(x => x.GetAll()).Returns(emptyBookings);
 			roomRepository.Setup(x => x.GetAll()).Returns(twoRooms);
